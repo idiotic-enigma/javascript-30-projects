@@ -1,4 +1,4 @@
-/* My solution before watching challenge video */
+/* My solution before watching challenge video
 
 const checkboxes = Array.from( document.querySelectorAll('.item > input') );
 
@@ -32,3 +32,27 @@ checkboxes.forEach((checkbox, index) => checkbox.addEventListener('click', () =>
 	else { selectionAnchor = index; }
 	console.log(`Anchor: ${selectionAnchor}, Current: ${selectionCurrent}`);
 }));
+*/
+
+/* Provided solution */
+let lastChecked = null;
+
+const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+
+function handleCheck(event) {
+	let inBetween = false;
+	/*	Two conditions must be met:
+			- A 'shift' key was held down
+			- Checkbox was checked, not unchecked
+	*/
+	if(event.shiftKey && this.checked) {
+		/*	Loop through every checkbox, find all the ones within the selection range and set 'checked' to true */
+		checkboxes.forEach(checkbox => {
+			if(checkbox === this || checkbox === lastChecked) inBetween = !inBetween;
+			if(inBetween) checkbox.checked = true;
+		});
+	}
+
+	lastChecked = this;
+}
